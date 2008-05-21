@@ -4,13 +4,18 @@ Name:		gosa
 Version:	2.5.16.1
 Release:	0.1
 License:	GPL
-Source0:	ftp://oss.gonicus.de/pub/gosa/gosa-2.5.16.1.tar.gz
+Source0:	ftp://oss.gonicus.de/pub/gosa/%{name}-%{version}.tar.gz
 # Source0-md5:	5bd315132e4962c228c32f00a68e8be8
-######		Unknown group!
-Group:		System/Administration
+Group:		Applications/Networking
 URL:		http://oss.GONICUS.de/project/?group_id=6
 Buildarch:	noarch
-Requires:	httpd,php,php-ldap,php-imap,php-snmp,php-mysql,php-mbstring,ImageMagick
+Requires:	ImageMagick
+Requires:	php(imap)
+Requires:	php(ldap)
+Requires:	php(mbstring)
+Requires:	php(mysql)
+Requires:	php(snmp)
+Requires:	webserver(php)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,9 +33,8 @@ manage the postfix/cyrus server combination and can write user adapted
 sieve scripts.
 
 %package schema
-######		Unknown group!
 Summary:	Schema Definitions for the GOSA package
-Group:		System/Administration
+Group:		Applications/Networking
 Requires:	openldap-servers >= 2.2.0
 Obsoletes:	gosa-ldap
 
@@ -38,9 +42,8 @@ Obsoletes:	gosa-ldap
 Contains the Schema definition files for the GOSA admin package.
 
 %package mkntpasswd
-######		Unknown group!
 Summary:	Schema Definitions for the GOSA package
-Group:		System/Administration
+Group:		Applications/Networking
 Requires:	perl-Crypt-SmbHash >= 0.02
 
 %description mkntpasswd
@@ -49,36 +52,32 @@ for completeness only. If in doubt use sambas "native" mkntpwd tool to
 generate hashes for GOsa.
 
 %package help-en
-######		Unknown group!
 Summary:	English online manual for GOSA package
-Group:		System/Administration
+Group:		Applications/Networking
 Requires:	gosa >= %{version}
 
 %description help-en
 English online manual page for GOSA package
 
 %package help-de
-######		Unknown group!
 Summary:	German localized online manual for GOSA package
-Group:		System/Administration
+Group:		Applications/Networking
 Requires:	gosa >= %{version}
 
 %description help-de
 German localized online manual page for GOSA package
 
 %package help-fr
-######		Unknown group!
 Summary:	French localized online manual for GOSA package
-Group:		System/Administration
+Group:		Applications/Networking
 Requires:	gosa >= %{version}
 
 %description help-fr
 French localized online manual page for GOSA package
 
 %package help-nl
-######		Unknown group!
 Summary:	Dutch localized online manual for GOSA package
-Group:		System/Administration
+Group:		Applications/Networking
 Requires:	gosa >= %{version}
 
 %description help-nl
@@ -107,7 +106,6 @@ EOF
 
 %install
 rm -rf $RPM_BUILD_ROOT
-# Create buildroot
 install -d $RPM_BUILD_ROOT%{_datadir}/gosa
 
 # Copy
@@ -150,9 +148,6 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/gosa/vacation
 mv -f $RPM_BUILD_ROOT%{_datadir}/gosa/plugins/personal/mail/sieve-*.txt $RPM_BUILD_ROOT%{_sysconfdir}/gosa
 install -d $RPM_BUILD_ROOT%{_docdir}/gosa-%{version}
 rm -rf $RPM_BUILD_ROOT%{_datadir}/gosa/contrib
-#rm -rf $RPM_BUILD_ROOT%{_datadir}/gosa/doc
-#rmdir contrib/openldap
-#bzip2 -9 contrib/opensides/goSamba.pl
 
 cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
