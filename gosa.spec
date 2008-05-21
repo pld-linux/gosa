@@ -10,12 +10,15 @@ Group:		Applications/Networking
 URL:		http://oss.GONICUS.de/project/?group_id=6
 Buildarch:	noarch
 Requires:	ImageMagick
+Requires:	php(gettext)
+Requires:	php(iconv)
 Requires:	php(imap)
 Requires:	php(ldap)
 Requires:	php(mbstring)
+Requires:	php(mhash)
 Requires:	php(mysql)
-Requires:	php(snmp)
 Requires:	webserver(php)
+Suggests:	php(snmp)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
