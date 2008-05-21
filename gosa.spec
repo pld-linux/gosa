@@ -2,7 +2,7 @@
 Summary:	Web Based LDAP Administration Program
 Name:		gosa
 Version:	2.5.16.1
-Release:	0.1
+Release:	0.2
 License:	GPL
 Source0:	ftp://oss.gonicus.de/pub/gosa/%{name}-%{version}.tar.gz
 # Source0-md5:	5bd315132e4962c228c32f00a68e8be8
@@ -41,6 +41,14 @@ Obsoletes:	gosa-ldap
 %description schema
 Contains the Schema definition files for the GOSA admin package.
 
+%package setup
+Summary:	GOsa setup wizard
+Group:		Applications/Networking
+Requires:	%{name} = %{version}
+
+%description setup
+PHP-Based installer for GOsa.
+
 %package mkntpasswd
 Summary:	Schema Definitions for the GOSA package
 Group:		Applications/Networking
@@ -54,7 +62,7 @@ generate hashes for GOsa.
 %package help-en
 Summary:	English online manual for GOSA package
 Group:		Applications/Networking
-Requires:	gosa >= %{version}
+Requires:	%{name} >= %{version}
 
 %description help-en
 English online manual page for GOSA package
@@ -62,7 +70,7 @@ English online manual page for GOSA package
 %package help-de
 Summary:	German localized online manual for GOSA package
 Group:		Applications/Networking
-Requires:	gosa >= %{version}
+Requires:	%{name} >= %{version}
 
 %description help-de
 German localized online manual page for GOSA package
@@ -70,7 +78,7 @@ German localized online manual page for GOSA package
 %package help-fr
 Summary:	French localized online manual for GOSA package
 Group:		Applications/Networking
-Requires:	gosa >= %{version}
+Requires:	%{name} >= %{version}
 
 %description help-fr
 French localized online manual page for GOSA package
@@ -78,7 +86,7 @@ French localized online manual page for GOSA package
 %package help-nl
 Summary:	Dutch localized online manual for GOSA package
 Group:		Applications/Networking
-Requires:	gosa >= %{version}
+Requires:	%{name} >= %{version}
 
 %description help-nl
 Dutch localized online manual page for GOSA package
@@ -109,7 +117,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_datadir}/gosa
 
 # Copy
-DIRS="doc ihtml plugins html include locale"
+DIRS="doc ihtml plugins html include locale setup"
 for i in $DIRS; do \
 cp -ua $i $RPM_BUILD_ROOT%{_datadir}/gosa/$i ; \
 done
@@ -193,8 +201,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
-%config(noreplace) %attr(700,http,http) %{_sysconfdir}
 %attr(700,http,http) /var/spool/gosa
+%dir %{_datadir}/gosa
 %attr(744,http,http) %{_datadir}/gosa/html
 %attr(744,http,http) %{_datadir}/gosa/ihtml
 %attr(744,http,http) %{_datadir}/gosa/include
@@ -206,6 +214,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc COPYING AUTHORS README contrib/demo.ldif contrib/openldap
 %{_sysconfdir}/openldap/schema/gosa
+
+%files setup
+%defattr(644,root,root,755)
+%{_datadir}/gosa/setup
 
 %files mkntpasswd
 %defattr(644,root,root,755)
