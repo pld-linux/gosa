@@ -87,8 +87,8 @@ Dutch localized online manual page for GOSA package
 %setup -q
 
 cat > apache.conf <<'EOF'
-Alias /%{name} %{_appdir}
-<Directory %{_appdir}>
+Alias /%{name} %{_appdir}/html
+<Directory %{_appdir}/html>
         Options None
         AllowOverride None
         Order allow,deny
@@ -98,7 +98,7 @@ EOF
 
 cat > lighttpd.conf <<'EOF'
 alias.url += (
-    "/%{name}" => "%{_appdir}",
+    "/%{name}" => "%{_appdir}/html",
 )
 EOF
 
@@ -153,13 +153,30 @@ cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
 cp -a apache.conf $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
 cp -a lighttpd.conf $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
+%triggerin -- apache1 < 1.3.37-3, apache1-base
+%webapp_register apache %{_webapp}
+
+%triggerun -- apache1 < 1.3.37-3, apache1-base
+%webapp_unregister apache %{_webapp}
+
+%triggerin -- apache < 2.2.0, apache-base
+%webapp_register httpd %{_webapp}
+
+%triggerun -- apache < 2.2.0, apache-base
+%webapp_unregister httpd %{_webapp}
+
+%triggerin -- lighttpd
+%webapp_register lighttpd %{_webapp}
+
+%triggerun -- lighttpd
+%webapp_unregister lighttpd %{_webapp}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 # Add shells file to %{_sysconfdir}/gosa
-/bin/cp /etc/shells %{_sysconfdir}/gosa
+/bin/cp /etc/shells %{_sysconfdir}
 
 %pre
 # Cleanup compile dir on updates, always exit cleanly even on errors
@@ -176,14 +193,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
-%config(noreplace) %attr(700,http,http) %{_sysconfdir}/gosa
-%attr(700, http, http) /var/spool/gosa
-%attr(744, http, http) %{_datadir}/gosa/html
-%attr(744, http, http) %{_datadir}/gosa/ihtml
-%attr(744, http, http) %{_datadir}/gosa/include
-%attr(744, http, http) %{_datadir}/gosa/locale
-%attr(744, http, http) %{_datadir}/gosa/plugins
-%attr(744, http, http) %{_datadir}/gosa/doc/guide.xml
+%config(noreplace) %attr(700,http,http) %{_sysconfdir}
+%attr(700,http,http) /var/spool/gosa
+%attr(744,http,http) %{_datadir}/gosa/html
+%attr(744,http,http) %{_datadir}/gosa/ihtml
+%attr(744,http,http) %{_datadir}/gosa/include
+%attr(744,http,http) %{_datadir}/gosa/locale
+%attr(744,http,http) %{_datadir}/gosa/plugins
+%attr(744,http,http) %{_datadir}/gosa/doc/guide.xml
 
 %files schema
 %defattr(644,root,root,755)
