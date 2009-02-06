@@ -151,7 +151,7 @@ install -d $RPM_BUILD_ROOT%{confdir}
 
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/openldap/schema/gosa
 mv contrib/openldap/*.schema $RPM_BUILD_ROOT%{_sysconfdir}/openldap/schema/gosa
-sed 's§"CONFIG_TEMPLATE_DIR", "../contrib/"§"CONFIG_TEMPLATE_DIR", "%{docdir}/"§g' $RPM_BUILD_ROOT%{_datadir}/gosa/include/functions.inc > $RPM_BUILD_ROOT%{_datadir}/gosa/include/functions.inc.new
+sed 's|"CONFIG_TEMPLATE_DIR", "../contrib/"|"CONFIG_TEMPLATE_DIR", "%{docdir}/"|g' $RPM_BUILD_ROOT%{_datadir}/gosa/include/functions.inc > $RPM_BUILD_ROOT%{_datadir}/gosa/include/functions.inc.new
 mv -f $RPM_BUILD_ROOT%{_datadir}/gosa/include/functions.inc.new $RPM_BUILD_ROOT%{_datadir}/gosa/include/functions.inc
 
 mv -f doc manual
