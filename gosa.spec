@@ -8,7 +8,7 @@ Source0:	ftp://oss.gonicus.de/pub/gosa/%{name}-%{version}.tar.gz
 # Source0-md5:	5bd315132e4962c228c32f00a68e8be8
 Group:		Applications/Networking
 URL:		http://oss.GONICUS.de/project/?group_id=6
-Buildarch:	noarch
+BuildArch:	noarch
 Requires:	ImageMagick
 Requires:	php(gettext)
 Requires:	php(iconv)
